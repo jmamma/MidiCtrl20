@@ -1,0 +1,112 @@
+############################################################
+
+mididuino.name=MidiDuino USB 1.0 (atmega32 16 Mhz)
+
+mididuino.upload.protocol=midisend
+mididuino.upload.maximum_size=28672
+mididuino.upload.speed=19200
+mididuino.upload.midiid=0x38
+
+mididuino.bootloader.low_fuses=0x20
+mididuino.bootloader.high_fuses=0xd8
+mididuino.bootloader.extended_fuses=0x00
+mididuino.bootloader.path=mididuino-usb
+mididuino.bootloader.file=mididuino-usb.hex
+mididuino.bootloader.unlock_bits=0x3F
+mididuino.bootloader.lock_bits=0x0F
+
+mididuino.build.mcu=atmega32
+mididuino.build.f_cpu=16000000L
+mididuino.build.core=mididuino
+mididuino.build.libraries=Midi GUI CommonTools
+mididuino.build.flags=
+
+############################################################
+
+minicommand2.name=Minicommand2 1.1 (atmega64 16 Mhz + SRAM)
+
+minicommand2.upload.protocol=midisend
+minicommand2.upload.maximum_size=61000
+minicommand2.upload.speed=19200
+minicommand2.upload.midiid=0x41
+
+minicommand2.bootloader.low_fuses=0x2f
+minicommand2.bootloader.high_fuses=0x8a
+minicommand2.bootloader.extended_fuses=0xff
+minicommand2.bootloader.path=minicommand2
+minicommand2.bootloader.file=minicommand.hex
+minicommand2.bootloader.unlock_bits=0x3F
+minicommand2.bootloader.lock_bits=0x0F
+
+minicommand2.build.mcu=atmega64
+minicommand2.build.f_cpu=16000000L
+minicommand2.build.core=minicommand2
+minicommand2.build.libraries=Midi GUI CommonTools Elektron
+minicommand2.build.flags=-Wl,--section-start=.bss=0x802000,--defsym=__heap_end=0x80ffff -mcall-prologues -funsigned-char -funsigned-bitfields -fshort-enums -fpack-struct -Wall -fno-default-inline -fno-rtti -fno-implement-inlines --param inline-call-cost=2 -finline-limit=3 -fno-inline-small-functions -fno-tree-scev-cprop -fsplit-wide-types -fno-threadsafe-statics -Wl,--relax
+
+############################################################
+
+monojoystick.name=Monojoystick 1.1 (atmega64 16 Mhz + SRAM)
+
+monojoystick.upload.protocol=midisend
+monojoystick.upload.maximum_size=61000
+monojoystick.upload.speed=19200
+monojoystick.upload.midiid=0x43
+
+monojoystick.bootloader.low_fuses=0x2f
+monojoystick.bootloader.high_fuses=0x8a
+monojoystick.bootloader.extended_fuses=0xff
+monojoystick.bootloader.path=monojoystick
+monojoystick.bootloader.file=minicommand.hex
+monojoystick.bootloader.unlock_bits=0x3F
+monojoystick.bootloader.lock_bits=0x0F
+
+monojoystick.build.mcu=atmega64
+monojoystick.build.f_cpu=16000000L
+monojoystick.build.core=monojoystick
+monojoystick.build.libraries=Midi GUI CommonTools Elektron
+monojoystick.build.flags=-Wl,--section-start=.bss=0x802000,--defsym=__heap_end=0x80ffff
+
+############################################################
+#mididuino-small.name=Mididuino-Small 1.0 (atmega168 arduino clone)
+
+#mididuino-small.upload.protocol=midisend
+#mididuino-small.upload.maximum_size=14000
+#mididuino-small.upload.speed=19200
+#mididuino-small.upload.midiid=0x43
+
+#mididuino-small.bootloader.low_fuses=0x2f
+#mididuino-small.bootloader.high_fuses=0x8a
+#mididuino-small.bootloader.extended_fuses=0xff
+#mididuino-small.bootloader.path=mididuino-small
+#mididuino-small.bootloader.file=minicommand.hex
+#mididuino-small.bootloader.unlock_bits=0x3F
+#mididuino-small.bootloader.lock_bits=0x0F
+
+#mididuino-small.build.mcu=atmega168
+#mididuino-small.build.f_cpu=16000000L
+#mididuino-small.build.core=mididuino-small
+#mididuino-small.build.libraries=CommonTools Midi GUI
+#mididuino-small.build.flags=
+
+############################################################
+
+#atmega328.name=Arduino Duemilanove w/ Atmega328
+
+#atmega328.upload.protocol=stk500
+#atmega328.upload.maximum_size=30720
+#atmega328.upload.speed=57600
+
+#atmega328.bootloader.low_fuses=0xFF
+#atmega328.bootloader.high_fuses=0xDA
+#atmega328.bootloader.extended_fuses=0x05
+#atmega328.bootloader.path=atmega168
+#atmega328.bootloader.file=ATmegaBOOT_168_atmega328.hex
+#atmega328.bootloader.unlock_bits=0x3F
+#atmega328.bootloader.lock_bits=0x0F
+
+#atmega328.build.mcu=atmega328p
+#atmega328.build.f_cpu=16000000L
+#atmega328.build.libraries=Midi CommonTools MidiUartArduino
+#atmega328.build.core=arduino
+

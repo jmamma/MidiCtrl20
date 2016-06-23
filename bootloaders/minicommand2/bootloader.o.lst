@@ -1,0 +1,1307 @@
+   1               		.file	"bootloader.c"
+   2               	__SREG__ = 0x3f
+   3               	__SP_H__ = 0x3e
+   4               	__SP_L__ = 0x3d
+   5               	__CCP__  = 0x34
+   6               	__tmp_reg__ = 0
+   7               	__zero_reg__ = 1
+  15               	.Ltext0:
+  16               		.section	.text.eeprom_read_byte,"ax",@progbits
+  18               	eeprom_read_byte:
+  19               	.LFB2:
+  20               	.LSM0:
+  21               	.LVL0:
+  22               	/* prologue: function */
+  23               	/* frame size = 0 */
+  24 0000 9C01      		movw r18,r24
+  25               	.LVL1:
+  26               	.L2:
+  27               	.LSM1:
+  28 0002 E199      		sbic 60-32,1
+  29 0004 00C0      		rjmp .L2
+  30               	.LSM2:
+  31 0006 3FBB      		out (62)+1-32,r19
+  32 0008 2EBB      		out 62-32,r18
+  33               	.LSM3:
+  34               	/* #APP */
+  35               	 ;  208 "/usr/local/CrossPack-AVR-20090415/lib/gcc/avr/4.3.2/../../../../avr/include/avr/eeprom.h" 
+  36               		/* START EEPROM READ CRITICAL SECTION */ 
+  37 000a E09A      		sbi 28, 0 
+  38 000c 8DB3      		in r24, 29 
+  39               		/* END EEPROM READ CRITICAL SECTION */ 
+  40               		
+  41               	 ;  0 "" 2
+  42               	.LVL2:
+  43               	.LVL3:
+  44               	/* epilogue start */
+  45               	.LSM4:
+  46               	/* #NOAPP */
+  47 000e 0895      		ret
+  48               	.LFE2:
+  50               		.section	.text.eeprom_write_byte,"ax",@progbits
+  52               	eeprom_write_byte:
+  53               	.LFB6:
+  54               	.LSM5:
+  55               	.LVL4:
+  56               	/* prologue: function */
+  57               	/* frame size = 0 */
+  58 0000 9C01      		movw r18,r24
+  59               	.LVL5:
+  60               	.L6:
+  61               	.LSM6:
+  62 0002 E199      		sbic 60-32,1
+  63 0004 00C0      		rjmp .L6
+  64               	.LSM7:
+  65 0006 3FBB      		out (62)+1-32,r19
+  66 0008 2EBB      		out 62-32,r18
+  67               	.LSM8:
+  68 000a 6DBB      		out 61-32,r22
+  69               	.LSM9:
+  70               	/* #APP */
+  71               	 ;  315 "/usr/local/CrossPack-AVR-20090415/lib/gcc/avr/4.3.2/../../../../avr/include/avr/eeprom.h" 
+  72               		/* START EEPROM WRITE CRITICAL SECTION */
+  73 000c 0FB6      		in	r0, 63		
+  74 000e F894      		cli				
+  75 0010 E29A      		sbi	28, 2	
+  76 0012 E19A      		sbi	28, 1	
+  77 0014 0FBE      		out	63, r0		
+  78               		/* END EEPROM WRITE CRITICAL SECTION */
+  79               	 ;  0 "" 2
+  80               	/* epilogue start */
+  81               	.LSM10:
+  82               	/* #NOAPP */
+  83 0016 0895      		ret
+  84               	.LFE6:
+  86               		.section	.text.bl_uart_getc,"ax",@progbits
+  87               	.global	bl_uart_getc
+  89               	bl_uart_getc:
+  90               	.LFB16:
+  91               	.LSM11:
+  92               	/* prologue: function */
+  93               	/* frame size = 0 */
+  94               	.L10:
+  95               	.LSM12:
+  96 0000 5F9B      		sbis 43-32,7
+  97 0002 00C0      		rjmp .L10
+  98               	.LSM13:
+  99 0004 8CB1      		in r24,44-32
+ 100               	/* epilogue start */
+ 101               	.LSM14:
+ 102 0006 0895      		ret
+ 103               	.LFE16:
+ 105               		.section	.text.bl_uart_putc,"ax",@progbits
+ 106               	.global	bl_uart_putc
+ 108               	bl_uart_putc:
+ 109               	.LFB17:
+ 110               	.LSM15:
+ 111               	/* prologue: function */
+ 112               	/* frame size = 0 */
+ 113               	.LVL6:
+ 114               	.L14:
+ 115               	.LSM16:
+ 116 0000 5D9B      		sbis 43-32,5
+ 117 0002 00C0      		rjmp .L14
+ 118               	.LSM17:
+ 119 0004 8CB9      		out 44-32,r24
+ 120               	/* epilogue start */
+ 121               	.LSM18:
+ 122 0006 0895      		ret
+ 123               	.LFE17:
+ 125               		.section	.text.midi_sysex_send_ack,"ax",@progbits
+ 126               	.global	midi_sysex_send_ack
+ 128               	midi_sysex_send_ack:
+ 129               	.LFB18:
+ 130               	.LSM19:
+ 131               	/* prologue: function */
+ 132               	/* frame size = 0 */
+ 133               	.LSM20:
+ 134 0000 E0E0      		ldi r30,lo8(ack_msg)
+ 135 0002 F0E0      		ldi r31,hi8(ack_msg)
+ 136               	.L19:
+ 137               	.LSM21:
+ 138 0004 8081      		ld r24,Z
+ 139               	.L18:
+ 140               	.LBB52:
+ 141               	.LBB53:
+ 142               	.LSM22:
+ 143 0006 5D9B      		sbis 43-32,5
+ 144 0008 00C0      		rjmp .L18
+ 145               	.LSM23:
+ 146 000a 8CB9      		out 44-32,r24
+ 147 000c 3196      		adiw r30,1
+ 148               	.LBE53:
+ 149               	.LBE52:
+ 150               	.LSM24:
+ 151 000e 80E0      		ldi r24,hi8(ack_msg+6)
+ 152 0010 E030      		cpi r30,lo8(ack_msg+6)
+ 153 0012 F807      		cpc r31,r24
+ 154 0014 01F4      		brne .L19
+ 155               	/* epilogue start */
+ 156               	.LSM25:
+ 157 0016 0895      		ret
+ 158               	.LFE18:
+ 160               		.section	.text.midi_sysex_send_nak,"ax",@progbits
+ 161               	.global	midi_sysex_send_nak
+ 163               	midi_sysex_send_nak:
+ 164               	.LFB19:
+ 165               	.LSM26:
+ 166               	/* prologue: function */
+ 167               	/* frame size = 0 */
+ 168               	.LSM27:
+ 169 0000 E0E0      		ldi r30,lo8(nak_msg)
+ 170 0002 F0E0      		ldi r31,hi8(nak_msg)
+ 171               	.L25:
+ 172               	.LSM28:
+ 173 0004 8081      		ld r24,Z
+ 174               	.L24:
+ 175               	.LBB54:
+ 176               	.LBB55:
+ 177               	.LSM29:
+ 178 0006 5D9B      		sbis 43-32,5
+ 179 0008 00C0      		rjmp .L24
+ 180               	.LSM30:
+ 181 000a 8CB9      		out 44-32,r24
+ 182 000c 3196      		adiw r30,1
+ 183               	.LBE55:
+ 184               	.LBE54:
+ 185               	.LSM31:
+ 186 000e 80E0      		ldi r24,hi8(nak_msg+6)
+ 187 0010 E030      		cpi r30,lo8(nak_msg+6)
+ 188 0012 F807      		cpc r31,r24
+ 189 0014 01F4      		brne .L25
+ 190               	/* epilogue start */
+ 191               	.LSM32:
+ 192 0016 0895      		ret
+ 193               	.LFE19:
+ 195               		.section	.text.make_word,"ax",@progbits
+ 196               	.global	make_word
+ 198               	make_word:
+ 199               	.LFB21:
+ 200               	.LSM33:
+ 201               	.LVL7:
+ 202               	/* prologue: function */
+ 203               	/* frame size = 0 */
+ 204 0000 782F      		mov r23,r24
+ 205               	.LSM34:
+ 206 0002 7150      		subi r23,lo8(-(-1))
+ 207               	.LVL8:
+ 208 0004 670F      		add r22,r23
+ 209               	.LVL9:
+ 210 0006 7F5F      		subi r23,lo8(-(1))
+ 211 0008 20E0      		ldi r18,lo8(0)
+ 212 000a 30E0      		ldi r19,hi8(0)
+ 213 000c 40E0      		ldi r20,hlo8(0)
+ 214 000e 50E0      		ldi r21,hhi8(0)
+ 215               	.LVL10:
+ 216 0010 00C0      		rjmp .L30
+ 217               	.LVL11:
+ 218               	.L31:
+ 219               	.LSM35:
+ 220 0012 DA01      		movw r26,r20
+ 221 0014 C901      		movw r24,r18
+ 222 0016 27E0      		ldi r18,7
+ 223 0018 880F      	1:	lsl r24
+ 224 001a 991F      		rol r25
+ 225 001c AA1F      		rol r26
+ 226 001e BB1F      		rol r27
+ 227 0020 2A95      		dec r18
+ 228 0022 01F4      		brne 1b
+ 229               	.LVL12:
+ 230               	.LSM36:
+ 231 0024 E62F      		mov r30,r22
+ 232 0026 F0E0      		ldi r31,lo8(0)
+ 233 0028 E050      		subi r30,lo8(-(data))
+ 234 002a F040      		sbci r31,hi8(-(data))
+ 235               	.LVL13:
+ 236 002c 2081      		ld r18,Z
+ 237 002e 30E0      		ldi r19,lo8(0)
+ 238 0030 40E0      		ldi r20,lo8(0)
+ 239 0032 50E0      		ldi r21,hi8(0)
+ 240 0034 282B      		or r18,r24
+ 241 0036 392B      		or r19,r25
+ 242 0038 4A2B      		or r20,r26
+ 243 003a 5B2B      		or r21,r27
+ 244               	.LVL14:
+ 245               	.LSM37:
+ 246 003c 6150      		subi r22,lo8(-(-1))
+ 247               	.LVL15:
+ 248               	.L30:
+ 249 003e 6717      		cp r22,r23
+ 250 0040 00F4      		brsh .L31
+ 251               	.LSM38:
+ 252 0042 C901      		movw r24,r18
+ 253               	.LVL16:
+ 254               	/* epilogue start */
+ 255 0044 0895      		ret
+ 256               	.LFE21:
+ 258               		.section	.text.check_firmware_checksum,"ax",@progbits
+ 259               	.global	check_firmware_checksum
+ 261               	check_firmware_checksum:
+ 262               	.LFB14:
+ 263               	.LSM39:
+ 264 0000 CF93      		push r28
+ 265 0002 DF93      		push r29
+ 266               	/* prologue: function */
+ 267               	/* frame size = 0 */
+ 268               	.LBB56:
+ 269               	.LSM40:
+ 270 0004 80E0      		ldi r24,lo8(0)
+ 271 0006 90E0      		ldi r25,hi8(0)
+ 272 0008 60E0      		ldi r22,lo8(gs(eeprom_read_byte))
+ 273 000a 70E0      		ldi r23,hi8(gs(eeprom_read_byte))
+ 274 000c 0E94 0000 		call __eerd_word
+ 275 0010 9C01      		movw r18,r24
+ 276               	.LVL17:
+ 277 0012 E0E0      		ldi r30,lo8(0)
+ 278 0014 F0E0      		ldi r31,hi8(0)
+ 279               	.LVL18:
+ 280 0016 C0E0      		ldi r28,lo8(0)
+ 281 0018 D0E0      		ldi r29,hi8(0)
+ 282               	.LVL19:
+ 283 001a 00C0      		rjmp .L34
+ 284               	.LVL20:
+ 285               	.L35:
+ 286               	.LBE56:
+ 287               	.LBB57:
+ 288               	.LSM41:
+ 289               	/* #APP */
+ 290               	 ;  58 "bootloader.c" 1
+ 291 001c 8491      		lpm r24, Z
+ 292               		
+ 293               	 ;  0 "" 2
+ 294               	/* #NOAPP */
+ 295               	.LBE57:
+ 296 001e C80F      		add r28,r24
+ 297 0020 D11D      		adc r29,__zero_reg__
+ 298               	.LSM42:
+ 299 0022 3196      		adiw r30,1
+ 300               	.L34:
+ 301 0024 E217      		cp r30,r18
+ 302 0026 F307      		cpc r31,r19
+ 303 0028 00F0      		brlo .L35
+ 304               	.LBB58:
+ 305               	.LSM43:
+ 306 002a 82E0      		ldi r24,lo8(2)
+ 307 002c 90E0      		ldi r25,hi8(2)
+ 308               	.LVL21:
+ 309 002e 60E0      		ldi r22,lo8(gs(eeprom_read_byte))
+ 310 0030 70E0      		ldi r23,hi8(gs(eeprom_read_byte))
+ 311 0032 0E94 0000 		call __eerd_word
+ 312               	.LVL22:
+ 313 0036 20E0      		ldi r18,lo8(0)
+ 314 0038 DF73      		andi r29,hi8(16383)
+ 315 003a C817      		cp r28,r24
+ 316 003c D907      		cpc r29,r25
+ 317 003e 01F4      		brne .L36
+ 318 0040 21E0      		ldi r18,lo8(1)
+ 319               	.L36:
+ 320               	.LBE58:
+ 321               	.LSM44:
+ 322 0042 822F      		mov r24,r18
+ 323               	/* epilogue start */
+ 324 0044 DF91      		pop r29
+ 325 0046 CF91      		pop r28
+ 326               	.LVL23:
+ 327 0048 0895      		ret
+ 328               	.LFE14:
+ 330               		.section	.text.is_button_pressed,"ax",@progbits
+ 331               	.global	is_button_pressed
+ 333               	is_button_pressed:
+ 334               	.LFB27:
+ 335               	.LSM45:
+ 336               	/* prologue: function */
+ 337               	/* frame size = 0 */
+ 338               	.LSM46:
+ 339 0000 0E94 0000 		call sr165_read
+ 340 0004 8095      		com r24
+ 341               	.LSM47:
+ 342 0006 881F      		rol r24
+ 343 0008 8827      		clr r24
+ 344 000a 881F      		rol r24
+ 345               	/* epilogue start */
+ 346 000c 0895      		ret
+ 347               	.LFE27:
+ 349               		.data
+ 350               	.LC0:
+ 351 0000 424C 4B20 		.string	"BLK "
+ 351      00
+ 352               		.section	.text.write_block_data,"ax",@progbits
+ 353               	.global	write_block_data
+ 355               	write_block_data:
+ 356               	.LFB23:
+ 357               	.LSM48:
+ 358 0000 1F93      		push r17
+ 359 0002 CF93      		push r28
+ 360 0004 DF93      		push r29
+ 361               	/* prologue: function */
+ 362               	/* frame size = 0 */
+ 363               	.LSM49:
+ 364 0006 1FB7      		in r17,__SREG__
+ 365               	.LVL24:
+ 366               	.LSM50:
+ 367 0008 0E94 0000 		call lcd_line2
+ 368               	.LSM51:
+ 369 000c 80E0      		ldi r24,lo8(.LC0)
+ 370 000e 90E0      		ldi r25,hi8(.LC0)
+ 371 0010 64E0      		ldi r22,lo8(4)
+ 372 0012 0E94 0000 		call lcd_put
+ 373               	.LSM52:
+ 374 0016 8091 0000 		lds r24,sysex_address+1
+ 375 001a 0E94 0000 		call lcd_putnumberx
+ 376               	.LSM53:
+ 377               	/* #APP */
+ 378               	 ;  168 "bootloader.c" 1
+ 379 001e F894      		cli
+ 380               	 ;  0 "" 2
+ 381               	.LSM54:
+ 382               	/* #NOAPP */
+ 383 0020 6091 0000 		lds r22,sysex_address
+ 384 0024 7091 0000 		lds r23,(sysex_address)+1
+ 385               	.LVL25:
+ 386 0028 83E0      		ldi r24,lo8(3)
+ 387 002a FB01      		movw r30,r22
+ 388               	/* #APP */
+ 389               	 ;  169 "bootloader.c" 1
+ 390 002c 8093 6800 		sts 104, r24
+ 391 0030 E895      		spm
+ 392               		
+ 393               	 ;  0 "" 2
+ 394               	/* #NOAPP */
+ 395               	.L42:
+ 396               	.LSM55:
+ 397 0032 8091 6800 		lds r24,104
+ 398 0036 80FD      		sbrc r24,0
+ 399 0038 00C0      		rjmp .L42
+ 400 003a C0E0      		ldi r28,lo8(sysex_data)
+ 401 003c D0E0      		ldi r29,hi8(sysex_data)
+ 402 003e AB01      		movw r20,r22
+ 403               	.LBB59:
+ 404               	.LSM56:
+ 405 0040 A1E0      		ldi r26,lo8(1)
+ 406               	.LVL26:
+ 407               	.L43:
+ 408 0042 3981      		ldd r19,Y+1
+ 409 0044 20E0      		ldi r18,lo8(0)
+ 410 0046 8881      		ld r24,Y
+ 411 0048 90E0      		ldi r25,lo8(0)
+ 412 004a 822B      		or r24,r18
+ 413 004c 932B      		or r25,r19
+ 414 004e FA01      		movw r30,r20
+ 415               	/* #APP */
+ 416               	 ;  174 "bootloader.c" 1
+ 417 0050 0C01      		movw  r0, r24
+ 418 0052 A093 6800 		sts 104, r26
+ 419 0056 E895      		spm
+ 420 0058 1124      		clr  r1
+ 421               		
+ 422               	 ;  0 "" 2
+ 423               	.LSM57:
+ 424               	/* #NOAPP */
+ 425 005a 4E5F      		subi r20,lo8(-(2))
+ 426 005c 5F4F      		sbci r21,hi8(-(2))
+ 427 005e 2296      		adiw r28,2
+ 428               	.LBE59:
+ 429               	.LSM58:
+ 430 0060 F0E0      		ldi r31,hi8(sysex_data+256)
+ 431 0062 C030      		cpi r28,lo8(sysex_data+256)
+ 432 0064 DF07      		cpc r29,r31
+ 433 0066 01F4      		brne .L43
+ 434               	.LSM59:
+ 435 0068 85E0      		ldi r24,lo8(5)
+ 436 006a FB01      		movw r30,r22
+ 437               	/* #APP */
+ 438               	 ;  177 "bootloader.c" 1
+ 439 006c 8093 6800 		sts 104, r24
+ 440 0070 E895      		spm
+ 441               		
+ 442               	 ;  0 "" 2
+ 443               	.LVL27:
+ 444               	/* #NOAPP */
+ 445               	.L44:
+ 446               	.LSM60:
+ 447 0072 8091 6800 		lds r24,104
+ 448 0076 80FD      		sbrc r24,0
+ 449 0078 00C0      		rjmp .L44
+ 450               	.LSM61:
+ 451 007a 81E1      		ldi r24,lo8(17)
+ 452               	/* #APP */
+ 453               	 ;  179 "bootloader.c" 1
+ 454 007c 8093 6800 		sts 104, r24
+ 455 0080 E895      		spm
+ 456               		
+ 457               	 ;  0 "" 2
+ 458               	.LSM62:
+ 459               	/* #NOAPP */
+ 460 0082 1FBF      		out __SREG__,r17
+ 461               	.LSM63:
+ 462 0084 1092 0000 		sts (recvd)+1,__zero_reg__
+ 463 0088 1092 0000 		sts recvd,__zero_reg__
+ 464               	/* epilogue start */
+ 465               	.LSM64:
+ 466 008c DF91      		pop r29
+ 467 008e CF91      		pop r28
+ 468 0090 1F91      		pop r17
+ 469               	.LVL28:
+ 470 0092 0895      		ret
+ 471               	.LFE23:
+ 473               		.section	.text.write_block,"ax",@progbits
+ 474               	.global	write_block
+ 476               	write_block:
+ 477               	.LFB24:
+ 478               	.LSM65:
+ 479 0000 EF92      		push r14
+ 480 0002 FF92      		push r15
+ 481 0004 0F93      		push r16
+ 482 0006 1F93      		push r17
+ 483 0008 CF93      		push r28
+ 484 000a DF93      		push r29
+ 485               	/* prologue: function */
+ 486               	/* frame size = 0 */
+ 487               	.LSM66:
+ 488 000c 8091 0000 		lds r24,sysex_cnt
+ 489 0010 E82E      		mov r14,r24
+ 490 0012 FF24      		clr r15
+ 491 0014 E701      		movw r28,r14
+ 492 0016 2197      		sbiw r28,1
+ 493 0018 10E0      		ldi r17,lo8(0)
+ 494               	.LVL29:
+ 495 001a 93E0      		ldi r25,lo8(3)
+ 496               	.LVL30:
+ 497 001c 00C0      		rjmp .L50
+ 498               	.L51:
+ 499               	.LSM67:
+ 500 001e E050      		subi r30,lo8(-(data))
+ 501 0020 F040      		sbci r31,hi8(-(data))
+ 502 0022 8081      		ld r24,Z
+ 503 0024 1827      		eor r17,r24
+ 504               	.LSM68:
+ 505 0026 9F5F      		subi r25,lo8(-(1))
+ 506               	.L50:
+ 507 0028 E92F      		mov r30,r25
+ 508 002a F0E0      		ldi r31,lo8(0)
+ 509 002c EC17      		cp r30,r28
+ 510 002e FD07      		cpc r31,r29
+ 511 0030 04F0      		brlt .L51
+ 512               	.LSM69:
+ 513 0032 0091 0000 		lds r16,data+4
+ 514               	.LVL31:
+ 515               	.LSM70:
+ 516 0036 6091 0000 		lds r22,recvd
+ 517 003a 7091 0000 		lds r23,(recvd)+1
+ 518 003e 6115      		cp r22,__zero_reg__
+ 519 0040 7105      		cpc r23,__zero_reg__
+ 520 0042 01F4      		brne .L52
+ 521 0044 E0E0      		ldi r30,lo8(data+8)
+ 522 0046 F0E0      		ldi r31,hi8(data+8)
+ 523 0048 20E0      		ldi r18,lo8(0)
+ 524 004a 30E0      		ldi r19,hi8(0)
+ 525 004c 40E0      		ldi r20,hlo8(0)
+ 526 004e 50E0      		ldi r21,hhi8(0)
+ 527               	.LVL32:
+ 528               	.L53:
+ 529               	.LBB60:
+ 530               	.LBB61:
+ 531               	.LSM71:
+ 532 0050 A7E0      		ldi r26,7
+ 533 0052 220F      	1:	lsl r18
+ 534 0054 331F      		rol r19
+ 535 0056 441F      		rol r20
+ 536 0058 551F      		rol r21
+ 537 005a AA95      		dec r26
+ 538 005c 01F4      		brne 1b
+ 539               	.LSM72:
+ 540 005e 8081      		ld r24,Z
+ 541 0060 90E0      		ldi r25,lo8(0)
+ 542               	.LVL33:
+ 543 0062 A0E0      		ldi r26,lo8(0)
+ 544 0064 B0E0      		ldi r27,hi8(0)
+ 545 0066 282B      		or r18,r24
+ 546 0068 392B      		or r19,r25
+ 547 006a 4A2B      		or r20,r26
+ 548 006c 5B2B      		or r21,r27
+ 549 006e 3197      		sbiw r30,1
+ 550               	.LSM73:
+ 551 0070 80E0      		ldi r24,hi8(data+4)
+ 552 0072 E030      		cpi r30,lo8(data+4)
+ 553 0074 F807      		cpc r31,r24
+ 554 0076 01F4      		brne .L53
+ 555               	.LBE61:
+ 556               	.LBE60:
+ 557               	.LSM74:
+ 558 0078 3093 0000 		sts (sysex_address)+1,r19
+ 559 007c 2093 0000 		sts sysex_address,r18
+ 560               	.LVL34:
+ 561               	.L52:
+ 562               	.LSM75:
+ 563 0080 8091 0000 		lds r24,sysex_address
+ 564 0084 9091 0000 		lds r25,(sysex_address)+1
+ 565 0088 8050      		subi r24,lo8(-4096)
+ 566 008a 904F      		sbci r25,hi8(-4096)
+ 567               	.LVL35:
+ 568 008c 00F0      		brlo .+2
+ 569 008e 00C0      		rjmp .L54
+ 570 0090 40E0      		ldi r20,lo8(0)
+ 571               	.LVL36:
+ 572 0092 30E0      		ldi r19,lo8(0)
+ 573               	.LVL37:
+ 574 0094 20E0      		ldi r18,lo8(0)
+ 575               	.LVL38:
+ 576               	.LSM76:
+ 577 0096 87EF      		ldi r24,lo8(-9)
+ 578 0098 9FEF      		ldi r25,hi8(-9)
+ 579 009a E80E      		add r14,r24
+ 580 009c F91E      		adc r15,r25
+ 581 009e 00C0      		rjmp .L55
+ 582               	.L60:
+ 583 00a0 DC01      		movw r26,r24
+ 584 00a2 A050      		subi r26,lo8(-(data))
+ 585 00a4 B040      		sbci r27,hi8(-(data))
+ 586               	.LSM77:
+ 587 00a6 8770      		andi r24,lo8(7)
+ 588 00a8 9070      		andi r25,hi8(7)
+ 589 00aa 892B      		or r24,r25
+ 590 00ac 01F4      		brne .L56
+ 591               	.LSM78:
+ 592 00ae 1996      		adiw r26,9
+ 593 00b0 2C91      		ld r18,X
+ 594 00b2 00C0      		rjmp .L57
+ 595               	.L56:
+ 596               	.LSM79:
+ 597 00b4 FB01      		movw r30,r22
+ 598 00b6 E050      		subi r30,lo8(-(sysex_data))
+ 599 00b8 F040      		sbci r31,hi8(-(sysex_data))
+ 600 00ba 822F      		mov r24,r18
+ 601 00bc 8795      		ror r24
+ 602 00be 8827      		clr r24
+ 603 00c0 8795      		ror r24
+ 604 00c2 1996      		adiw r26,9
+ 605 00c4 9C91      		ld r25,X
+ 606 00c6 892B      		or r24,r25
+ 607 00c8 8083      		st Z,r24
+ 608 00ca 6F5F      		subi r22,lo8(-(1))
+ 609 00cc 7F4F      		sbci r23,hi8(-(1))
+ 610               	.LSM80:
+ 611 00ce 4F5F      		subi r20,lo8(-(1))
+ 612               	.LSM81:
+ 613 00d0 2695      		lsr r18
+ 614               	.L57:
+ 615               	.LSM82:
+ 616 00d2 4017      		cp r20,r16
+ 617 00d4 00F4      		brsh .L65
+ 618               	.L58:
+ 619               	.LSM83:
+ 620 00d6 3F5F      		subi r19,lo8(-(1))
+ 621               	.L55:
+ 622 00d8 832F      		mov r24,r19
+ 623 00da 90E0      		ldi r25,lo8(0)
+ 624 00dc 8E15      		cp r24,r14
+ 625 00de 9F05      		cpc r25,r15
+ 626 00e0 04F0      		brlt .L60
+ 627               	.L65:
+ 628 00e2 7093 0000 		sts (recvd)+1,r23
+ 629 00e6 6093 0000 		sts recvd,r22
+ 630               	.LSM84:
+ 631 00ea 1F77      		andi r17,lo8(127)
+ 632 00ec C050      		subi r28,lo8(-(data))
+ 633 00ee D040      		sbci r29,hi8(-(data))
+ 634 00f0 8881      		ld r24,Y
+ 635 00f2 1817      		cp r17,r24
+ 636 00f4 01F4      		brne .L54
+ 637 00f6 4034      		cpi r20,lo8(64)
+ 638 00f8 01F4      		brne .L54
+ 639               	.LSM85:
+ 640 00fa 8091 0000 		lds r24,recvd
+ 641 00fe 9091 0000 		lds r25,(recvd)+1
+ 642 0102 8050      		subi r24,lo8(256)
+ 643 0104 9140      		sbci r25,hi8(256)
+ 644               	.LVL39:
+ 645 0106 01F4      		brne .L66
+ 646               	.L61:
+ 647               	.LSM86:
+ 648 0108 0E94 0000 		call write_block_data
+ 649               	.LVL40:
+ 650               	.L66:
+ 651 010c 81E0      		ldi r24,lo8(1)
+ 652 010e 00C0      		rjmp .L62
+ 653               	.LVL41:
+ 654               	.L54:
+ 655 0110 80E0      		ldi r24,lo8(0)
+ 656               	.L62:
+ 657               	/* epilogue start */
+ 658               	.LSM87:
+ 659 0112 CDB7      		in r28,__SP_L__
+ 660 0114 DEB7      		in r29,__SP_H__
+ 661 0116 E6E0      		ldi r30, lo8(6)
+ 662 0118 0C94 0000 		jmp __epilogue_restores__ + ((18 - 6) * 2)
+ 663               	.LFE24:
+ 665               		.data
+ 666               	.LC1:
+ 667 0005 5752 4F4E 		.string	"WRONG CHECK"
+ 667      4720 4348 
+ 667      4543 4B00 
+ 668               		.section	.text.jump_to_main_program,"ax",@progbits
+ 669               	.global	jump_to_main_program
+ 671               	jump_to_main_program:
+ 672               	.LFB20:
+ 673               	.LSM88:
+ 674               	/* prologue: function */
+ 675               	/* frame size = 0 */
+ 676               	.LSM89:
+ 677 0000 88EE      		ldi r24,lo8(1000)
+ 678 0002 93E0      		ldi r25,hi8(1000)
+ 679               	.LVL42:
+ 680               	.LBB62:
+ 681               	.LBB63:
+ 682               	.LBB64:
+ 683               	.LBB65:
+ 684               	.LSM90:
+ 685 0004 20E9      		ldi r18,lo8(400)
+ 686 0006 31E0      		ldi r19,hi8(400)
+ 687               	.L68:
+ 688 0008 F901      		movw r30,r18
+ 689               	.LVL43:
+ 690               	/* #APP */
+ 691               	 ;  105 "/usr/local/CrossPack-AVR-20090415/lib/gcc/avr/4.3.2/../../../../avr/include/util/delay_bas
+ 692 000a 3197      		1: sbiw r30,1
+ 693 000c 01F4      		brne 1b
+ 694               	 ;  0 "" 2
+ 695               	/* #NOAPP */
+ 696               	.LBE65:
+ 697               	.LBE64:
+ 698               	.LSM91:
+ 699 000e 0197      		sbiw r24,1
+ 700               	.LSM92:
+ 701 0010 01F4      		brne .L68
+ 702               	.LBE63:
+ 703               	.LBE62:
+ 704               	.LSM93:
+ 705 0012 8091 0000 		lds r24,recvd
+ 706 0016 9091 0000 		lds r25,(recvd)+1
+ 707               	.LVL44:
+ 708 001a 892B      		or r24,r25
+ 709 001c 01F0      		breq .L69
+ 710               	.LSM94:
+ 711 001e 0E94 0000 		call write_block_data
+ 712               	.LVL45:
+ 713               	.L69:
+ 714               	.LSM95:
+ 715 0022 0E94 0000 		call check_firmware_checksum
+ 716               	.LVL46:
+ 717 0026 8823      		tst r24
+ 718 0028 01F0      		breq .L70
+ 719               	.LSM96:
+ 720 002a 0E94 0000 		call lcd_line1
+ 721               	.LSM97:
+ 722 002e 0E94 0000 		call lcd_clear_line
+ 723               	.LSM98:
+ 724 0032 0E94 0000 		call lcd_line2
+ 725               	.LSM99:
+ 726 0036 0E94 0000 		call lcd_clear_line
+ 727               	.LBB66:
+ 728               	.LSM100:
+ 729 003a 84E0      		ldi r24,lo8(4)
+ 730 003c 90E0      		ldi r25,hi8(4)
+ 731 003e 60E0      		ldi r22,lo8(gs(eeprom_read_byte))
+ 732 0040 70E0      		ldi r23,hi8(gs(eeprom_read_byte))
+ 733 0042 0E94 0000 		call __eerd_word
+ 734               	.LBE66:
+ 735               	.LSM101:
+ 736 0046 0197      		sbiw r24,1
+ 737 0048 01F0      		breq .L71
+ 738               	.LBB67:
+ 739               	.LBB68:
+ 740               	.LSM102:
+ 741 004a 84E0      		ldi r24,lo8(4)
+ 742 004c 90E0      		ldi r25,hi8(4)
+ 743 004e 61E0      		ldi r22,lo8(1)
+ 744 0050 70E0      		ldi r23,hi8(1)
+ 745 0052 40E0      		ldi r20,lo8(gs(eeprom_write_byte))
+ 746 0054 50E0      		ldi r21,hi8(gs(eeprom_write_byte))
+ 747 0056 0E94 0000 		call __eewr_word
+ 748               	.L71:
+ 749               	.LBE68:
+ 750               	.LBE67:
+ 751               	.LSM103:
+ 752 005a E091 0000 		lds r30,jump_to_app
+ 753 005e F091 0000 		lds r31,(jump_to_app)+1
+ 754 0062 0995      		icall
+ 755 0064 81E0      		ldi r24,lo8(1)
+ 756 0066 0895      		ret
+ 757               	.L70:
+ 758               	.LSM104:
+ 759 0068 0E94 0000 		call lcd_line2
+ 760               	.LSM105:
+ 761 006c 80E0      		ldi r24,lo8(.LC1)
+ 762 006e 90E0      		ldi r25,hi8(.LC1)
+ 763 0070 6BE0      		ldi r22,lo8(11)
+ 764 0072 0E94 0000 		call lcd_put
+ 765 0076 80E0      		ldi r24,lo8(0)
+ 766               	.LSM106:
+ 767 0078 0895      		ret
+ 768               	.LFE20:
+ 770               		.section	.text.write_firmware_checksum,"ax",@progbits
+ 771               	.global	write_firmware_checksum
+ 773               	write_firmware_checksum:
+ 774               	.LFB15:
+ 775               	.LSM107:
+ 776               	.LVL47:
+ 777 0000 EF92      		push r14
+ 778 0002 FF92      		push r15
+ 779 0004 0F93      		push r16
+ 780 0006 1F93      		push r17
+ 781               	/* prologue: function */
+ 782               	/* frame size = 0 */
+ 783 0008 9C01      		movw r18,r24
+ 784 000a 7B01      		movw r14,r22
+ 785               	.LBB69:
+ 786               	.LBB70:
+ 787               	.LSM108:
+ 788 000c 00E0      		ldi r16,lo8(gs(eeprom_write_byte))
+ 789 000e 10E0      		ldi r17,hi8(gs(eeprom_write_byte))
+ 790 0010 80E0      		ldi r24,lo8(0)
+ 791 0012 90E0      		ldi r25,hi8(0)
+ 792               	.LVL48:
+ 793 0014 B901      		movw r22,r18
+ 794               	.LVL49:
+ 795 0016 A801      		movw r20,r16
+ 796 0018 0E94 0000 		call __eewr_word
+ 797               	.LVL50:
+ 798               	.LBE70:
+ 799               	.LBE69:
+ 800               	.LBB71:
+ 801               	.LBB72:
+ 802 001c 82E0      		ldi r24,lo8(2)
+ 803 001e 90E0      		ldi r25,hi8(2)
+ 804 0020 B701      		movw r22,r14
+ 805 0022 A801      		movw r20,r16
+ 806 0024 0E94 0000 		call __eewr_word
+ 807               	.LBE72:
+ 808               	.LBE71:
+ 809               	.LBB73:
+ 810               	.LBB74:
+ 811 0028 84E0      		ldi r24,lo8(4)
+ 812 002a 90E0      		ldi r25,hi8(4)
+ 813 002c 61E0      		ldi r22,lo8(1)
+ 814 002e 70E0      		ldi r23,hi8(1)
+ 815 0030 A801      		movw r20,r16
+ 816 0032 0E94 0000 		call __eewr_word
+ 817               	/* epilogue start */
+ 818               	.LBE74:
+ 819               	.LBE73:
+ 820               	.LSM109:
+ 821 0036 1F91      		pop r17
+ 822 0038 0F91      		pop r16
+ 823 003a FF90      		pop r15
+ 824 003c EF90      		pop r14
+ 825               	.LVL51:
+ 826 003e 0895      		ret
+ 827               	.LFE15:
+ 829               		.section	.text.write_checksum,"ax",@progbits
+ 830               	.global	write_checksum
+ 832               	write_checksum:
+ 833               	.LFB22:
+ 834               	.LSM110:
+ 835               	/* prologue: function */
+ 836               	/* frame size = 0 */
+ 837               	.LBB75:
+ 838               	.LBB76:
+ 839               	.LSM111:
+ 840 0000 8091 0000 		lds r24,data+6
+ 841 0004 90E0      		ldi r25,lo8(0)
+ 842 0006 A0E0      		ldi r26,lo8(0)
+ 843 0008 B0E0      		ldi r27,hi8(0)
+ 844 000a 37E0      		ldi r19,7
+ 845 000c 880F      	1:	lsl r24
+ 846 000e 991F      		rol r25
+ 847 0010 AA1F      		rol r26
+ 848 0012 BB1F      		rol r27
+ 849 0014 3A95      		dec r19
+ 850 0016 01F4      		brne 1b
+ 851               	.LSM112:
+ 852 0018 2091 0000 		lds r18,data+5
+ 853 001c 30E0      		ldi r19,lo8(0)
+ 854 001e 40E0      		ldi r20,lo8(0)
+ 855 0020 50E0      		ldi r21,hi8(0)
+ 856 0022 822B      		or r24,r18
+ 857 0024 932B      		or r25,r19
+ 858 0026 A42B      		or r26,r20
+ 859 0028 B52B      		or r27,r21
+ 860               	.LSM113:
+ 861 002a 27E0      		ldi r18,7
+ 862 002c 880F      	1:	lsl r24
+ 863 002e 991F      		rol r25
+ 864 0030 AA1F      		rol r26
+ 865 0032 BB1F      		rol r27
+ 866 0034 2A95      		dec r18
+ 867 0036 01F4      		brne 1b
+ 868               	.LBE76:
+ 869               	.LBE75:
+ 870               	.LSM114:
+ 871 0038 2091 0000 		lds r18,data+4
+ 872 003c 30E0      		ldi r19,lo8(0)
+ 873 003e 40E0      		ldi r20,lo8(0)
+ 874 0040 50E0      		ldi r21,hi8(0)
+ 875 0042 822B      		or r24,r18
+ 876 0044 932B      		or r25,r19
+ 877 0046 A42B      		or r26,r20
+ 878 0048 B52B      		or r27,r21
+ 879 004a 6091 0000 		lds r22,data+8
+ 880 004e 70E0      		ldi r23,lo8(0)
+ 881 0050 7695      		lsr r23
+ 882 0052 762F      		mov r23,r22
+ 883 0054 6627      		clr r22
+ 884 0056 7795      		ror r23
+ 885 0058 6795      		ror r22
+ 886 005a 2091 0000 		lds r18,data+7
+ 887 005e 30E0      		ldi r19,lo8(0)
+ 888 0060 622B      		or r22,r18
+ 889 0062 732B      		or r23,r19
+ 890 0064 0E94 0000 		call write_firmware_checksum
+ 891               	.LSM115:
+ 892 0068 81E0      		ldi r24,lo8(1)
+ 893               	/* epilogue start */
+ 894 006a 0895      		ret
+ 895               	.LFE22:
+ 897               		.section	.text.handle_sysex,"ax",@progbits
+ 898               	.global	handle_sysex
+ 900               	handle_sysex:
+ 901               	.LFB25:
+ 902               	.LSM116:
+ 903               	/* prologue: function */
+ 904               	/* frame size = 0 */
+ 905               	.LSM117:
+ 906 0000 9091 0000 		lds r25,sysex_cnt
+ 907 0004 9430      		cpi r25,lo8(4)
+ 908 0006 00F0      		brlo .L90
+ 909               	.LSM118:
+ 910 0008 8091 0000 		lds r24,data+3
+ 911 000c 8530      		cpi r24,lo8(5)
+ 912 000e 01F0      		breq .L81
+ 913               	.LSM119:
+ 914 0010 8430      		cpi r24,lo8(4)
+ 915 0012 01F4      		brne .L82
+ 916               	.LSM120:
+ 917 0014 0E94 0000 		call jump_to_main_program
+ 918 0018 00C0      		rjmp .L83
+ 919               	.L82:
+ 920               	.LSM121:
+ 921 001a 8130      		cpi r24,lo8(1)
+ 922 001c 01F4      		brne .L84
+ 923               	.LSM122:
+ 924 001e 0E94 0000 		call write_block
+ 925 0022 00C0      		rjmp .L83
+ 926               	.L84:
+ 927               	.LSM123:
+ 928 0024 8330      		cpi r24,lo8(3)
+ 929 0026 01F4      		brne .L85
+ 930 0028 9930      		cpi r25,lo8(9)
+ 931 002a 01F4      		brne .L85
+ 932               	.LSM124:
+ 933 002c 0E94 0000 		call write_checksum
+ 934               	.L83:
+ 935               	.LSM125:
+ 936 0030 8823      		tst r24
+ 937               	.LVL52:
+ 938 0032 01F4      		brne .L81
+ 939               	.L85:
+ 940 0034 E0E0      		ldi r30,lo8(nak_msg)
+ 941 0036 F0E0      		ldi r31,hi8(nak_msg)
+ 942 0038 00C0      		rjmp .L86
+ 943               	.L81:
+ 944 003a E0E0      		ldi r30,lo8(ack_msg)
+ 945 003c F0E0      		ldi r31,hi8(ack_msg)
+ 946               	.L88:
+ 947               	.LBB77:
+ 948               	.LBB78:
+ 949               	.LSM126:
+ 950 003e 8081      		ld r24,Z
+ 951               	.LVL53:
+ 952               	.L87:
+ 953               	.LBB79:
+ 954               	.LBB80:
+ 955               	.LSM127:
+ 956 0040 5D9B      		sbis 43-32,5
+ 957 0042 00C0      		rjmp .L87
+ 958               	.LSM128:
+ 959 0044 8CB9      		out 44-32,r24
+ 960 0046 3196      		adiw r30,1
+ 961               	.LBE80:
+ 962               	.LBE79:
+ 963               	.LSM129:
+ 964 0048 80E0      		ldi r24,hi8(ack_msg+6)
+ 965 004a E030      		cpi r30,lo8(ack_msg+6)
+ 966 004c F807      		cpc r31,r24
+ 967 004e 01F4      		brne .L88
+ 968 0050 0895      		ret
+ 969               	.LVL54:
+ 970               	.L86:
+ 971               	.LBE78:
+ 972               	.LBE77:
+ 973               	.LBB81:
+ 974               	.LBB82:
+ 975               	.LSM130:
+ 976 0052 8081      		ld r24,Z
+ 977               	.LVL55:
+ 978               	.L89:
+ 979               	.LBB83:
+ 980               	.LBB84:
+ 981               	.LSM131:
+ 982 0054 5D9B      		sbis 43-32,5
+ 983 0056 00C0      		rjmp .L89
+ 984               	.LSM132:
+ 985 0058 8CB9      		out 44-32,r24
+ 986 005a 3196      		adiw r30,1
+ 987               	.LBE84:
+ 988               	.LBE83:
+ 989               	.LSM133:
+ 990 005c 80E0      		ldi r24,hi8(nak_msg+6)
+ 991 005e E030      		cpi r30,lo8(nak_msg+6)
+ 992 0060 F807      		cpc r31,r24
+ 993 0062 01F4      		brne .L86
+ 994               	.L90:
+ 995 0064 0895      		ret
+ 996               	.LBE82:
+ 997               	.LBE81:
+ 998               	.LFE25:
+ 1000               		.section	.text.handle_midi,"ax",@progbits
+ 1001               	.global	handle_midi
+ 1003               	handle_midi:
+ 1004               	.LFB26:
+ 1005               	.LSM134:
+ 1006               	.LVL56:
+ 1007               	/* prologue: function */
+ 1008               	/* frame size = 0 */
+ 1009 0000 982F      		mov r25,r24
+ 1010               	.LSM135:
+ 1011 0002 803F      		cpi r24,lo8(-16)
+ 1012 0004 01F4      		brne .L96
+ 1013               	.LSM136:
+ 1014 0006 8091 0000 		lds r24,in_sysex
+ 1015               	.LVL57:
+ 1016 000a 8130      		cpi r24,lo8(1)
+ 1017 000c 01F4      		brne .L97
+ 1018               	.LSM137:
+ 1019 000e 0E94 0000 		call handle_sysex
+ 1020               	.LVL58:
+ 1021               	.L97:
+ 1022               	.LSM138:
+ 1023 0012 1092 0000 		sts sysex_cnt,__zero_reg__
+ 1024               	.LSM139:
+ 1025 0016 81E0      		ldi r24,lo8(1)
+ 1026 0018 8093 0000 		sts in_sysex,r24
+ 1027 001c 0895      		ret
+ 1028               	.LVL59:
+ 1029               	.L96:
+ 1030               	.LSM140:
+ 1031 001e 873F      		cpi r24,lo8(-9)
+ 1032 0020 01F4      		brne .L99
+ 1033               	.LSM141:
+ 1034 0022 8091 0000 		lds r24,in_sysex
+ 1035               	.LVL60:
+ 1036 0026 8130      		cpi r24,lo8(1)
+ 1037 0028 01F4      		brne .L105
+ 1038               	.LSM142:
+ 1039 002a 0E94 0000 		call handle_sysex
+ 1040               	.LVL61:
+ 1041 002e 00C0      		rjmp .L105
+ 1042               	.LVL62:
+ 1043               	.L99:
+ 1044               	.LSM143:
+ 1045 0030 87FF      		sbrs r24,7
+ 1046 0032 00C0      		rjmp .L101
+ 1047               	.LVL63:
+ 1048               	.L105:
+ 1049               	.LSM144:
+ 1050 0034 1092 0000 		sts in_sysex,__zero_reg__
+ 1051 0038 0895      		ret
+ 1052               	.LVL64:
+ 1053               	.L101:
+ 1054               	.LSM145:
+ 1055 003a 8091 0000 		lds r24,in_sysex
+ 1056               	.LVL65:
+ 1057 003e 8823      		tst r24
+ 1058 0040 01F0      		breq .L104
+ 1059               	.LSM146:
+ 1060 0042 8091 0000 		lds r24,sysex_cnt
+ 1061 0046 E82F      		mov r30,r24
+ 1062 0048 F0E0      		ldi r31,lo8(0)
+ 1063 004a E050      		subi r30,lo8(-(data))
+ 1064 004c F040      		sbci r31,hi8(-(data))
+ 1065 004e 9083      		st Z,r25
+ 1066 0050 982F      		mov r25,r24
+ 1067               	.LVL66:
+ 1068 0052 9F5F      		subi r25,lo8(-(1))
+ 1069 0054 9093 0000 		sts sysex_cnt,r25
+ 1070               	.LSM147:
+ 1071 0058 9330      		cpi r25,lo8(3)
+ 1072 005a 00F0      		brlo .L102
+ 1073               	.LSM148:
+ 1074 005c 8091 0000 		lds r24,data
+ 1075 0060 8823      		tst r24
+ 1076 0062 01F4      		brne .L103
+ 1077 0064 8091 0000 		lds r24,data+1
+ 1078 0068 8331      		cpi r24,lo8(19)
+ 1079 006a 01F4      		brne .L103
+ 1080 006c 8091 0000 		lds r24,data+2
+ 1081 0070 8134      		cpi r24,lo8(65)
+ 1082 0072 01F0      		breq .L102
+ 1083               	.L103:
+ 1084               	.LSM149:
+ 1085 0074 1092 0000 		sts in_sysex,__zero_reg__
+ 1086               	.L102:
+ 1087               	.LSM150:
+ 1088 0078 9536      		cpi r25,lo8(101)
+ 1089 007a 00F0      		brlo .L104
+ 1090               	.LSM151:
+ 1091 007c 1092 0000 		sts in_sysex,__zero_reg__
+ 1092               	.LVL67:
+ 1093               	.L104:
+ 1094 0080 0895      		ret
+ 1095               	.LFE26:
+ 1097               		.data
+ 1098               	.LC2:
+ 1099 0011 424F 4F54 		.string	"BOOTLOADER"
+ 1099      4C4F 4144 
+ 1099      4552 00
+ 1100               		.section	.text.main,"ax",@progbits
+ 1101               	.global	main
+ 1103               	main:
+ 1104               	.LFB28:
+ 1105               	.LSM152:
+ 1106 0000 1F93      		push r17
+ 1107               	/* prologue: function */
+ 1108               	/* frame size = 0 */
+ 1109               	.LSM153:
+ 1110               	/* #APP */
+ 1111               	 ;  292 "bootloader.c" 1
+ 1112 0002 F894      		cli
+ 1113               	 ;  0 "" 2
+ 1114               	.LSM154:
+ 1115               	 ;  293 "bootloader.c" 1
+ 1116 0004 A895      		wdr
+ 1117               	 ;  0 "" 2
+ 1118               	.LSM155:
+ 1119               	/* #NOAPP */
+ 1120 0006 28E1      		ldi r18,lo8(24)
+ 1121               	/* #APP */
+ 1122               	 ;  294 "bootloader.c" 1
+ 1123 0008 0FB6      		in __tmp_reg__, __SREG__
+ 1124 000a F894      		cli
+ 1125 000c 21BD      		out 33, r18
+ 1126 000e 11BC      		out 33, __zero_reg__
+ 1127 0010 0FBE      		out __SREG__,__tmp_reg__
+ 1128               		
+ 1129               	 ;  0 "" 2
+ 1130               	.LSM156:
+ 1131               	/* #NOAPP */
+ 1132 0012 8FEF      		ldi r24,lo8(-1)
+ 1133 0014 82B9      		out 34-32,r24
+ 1134               	.LSM157:
+ 1135 0016 89E0      		ldi r24,lo8(9)
+ 1136 0018 8093 8A00 		sts 138,r24
+ 1137               	.LSM158:
+ 1138 001c 81E8      		ldi r24,lo8(-127)
+ 1139 001e 8093 8B00 		sts 139,r24
+ 1140               	.LSM159:
+ 1141 0022 80EA      		ldi r24,lo8(160)
+ 1142 0024 90E0      		ldi r25,hi8(160)
+ 1143 0026 9093 8700 		sts (134)+1,r25
+ 1144 002a 8093 8600 		sts 134,r24
+ 1145               	.LSM160:
+ 1146 002e 83E0      		ldi r24,lo8(3)
+ 1147 0030 85BF      		out 85-32,r24
+ 1148               	.LSM161:
+ 1149 0032 1092 9000 		sts 144,__zero_reg__
+ 1150               	.LSM162:
+ 1151 0036 8FE1      		ldi r24,lo8(31)
+ 1152 0038 89B9      		out 41-32,r24
+ 1153               	.LSM163:
+ 1154 003a 86E0      		ldi r24,lo8(6)
+ 1155 003c 8093 9500 		sts 149,r24
+ 1156               	.LSM164:
+ 1157 0040 2AB9      		out 42-32,r18
+ 1158               	.LSM165:
+ 1159 0042 0E94 0000 		call sr165_init
+ 1160               	.LSM166:
+ 1161 0046 0E94 0000 		call lcd_init
+ 1162               	.LSM167:
+ 1163 004a 0E94 0000 		call lcd_line1
+ 1164               	.LSM168:
+ 1165 004e 0E94 0000 		call lcd_clear_line
+ 1166               	.LSM169:
+ 1167 0052 0E94 0000 		call lcd_line2
+ 1168               	.LSM170:
+ 1169 0056 0E94 0000 		call lcd_clear_line
+ 1170               	.LSM171:
+ 1171 005a 0E94 0000 		call lcd_line1
+ 1172               	.LSM172:
+ 1173 005e 80E0      		ldi r24,lo8(.LC2)
+ 1174 0060 90E0      		ldi r25,hi8(.LC2)
+ 1175 0062 6AE0      		ldi r22,lo8(10)
+ 1176 0064 0E94 0000 		call lcd_put
+ 1177               	.LBB85:
+ 1178               	.LSM173:
+ 1179 0068 84E0      		ldi r24,lo8(4)
+ 1180 006a 90E0      		ldi r25,hi8(4)
+ 1181 006c 60E0      		ldi r22,lo8(gs(eeprom_read_byte))
+ 1182 006e 70E0      		ldi r23,hi8(gs(eeprom_read_byte))
+ 1183 0070 0E94 0000 		call __eerd_word
+ 1184               	.LBE85:
+ 1185               	.LSM174:
+ 1186 0074 0197      		sbiw r24,1
+ 1187 0076 01F4      		brne .L107
+ 1188 0078 0E94 0000 		call is_button_pressed
+ 1189 007c 8823      		tst r24
+ 1190 007e 01F4      		brne .L107
+ 1191               	.LSM175:
+ 1192 0080 0E94 0000 		call jump_to_main_program
+ 1193               	.L107:
+ 1194 0084 E0E0      		ldi r30,lo8(ack_msg)
+ 1195 0086 F0E0      		ldi r31,hi8(ack_msg)
+ 1196               	.L109:
+ 1197               	.LBB86:
+ 1198               	.LBB87:
+ 1199               	.LSM176:
+ 1200 0088 8081      		ld r24,Z
+ 1201               	.L108:
+ 1202               	.LBB88:
+ 1203               	.LBB89:
+ 1204               	.LSM177:
+ 1205 008a 5D9B      		sbis 43-32,5
+ 1206 008c 00C0      		rjmp .L108
+ 1207               	.LSM178:
+ 1208 008e 8CB9      		out 44-32,r24
+ 1209 0090 3196      		adiw r30,1
+ 1210               	.LBE89:
+ 1211               	.LBE88:
+ 1212               	.LSM179:
+ 1213 0092 80E0      		ldi r24,hi8(ack_msg+6)
+ 1214 0094 E030      		cpi r30,lo8(ack_msg+6)
+ 1215 0096 F807      		cpc r31,r24
+ 1216 0098 01F4      		brne .L109
+ 1217 009a 10E0      		ldi r17,lo8(0)
+ 1218               	.LVL68:
+ 1219               	.L121:
+ 1220               	.LBE87:
+ 1221               	.LBE86:
+ 1222               	.LSM180:
+ 1223 009c 0E94 0000 		call is_button_pressed
+ 1224 00a0 8823      		tst r24
+ 1225 00a2 01F4      		brne .L110
+ 1226 00a4 11E0      		ldi r17,lo8(1)
+ 1227 00a6 00C0      		rjmp .L111
+ 1228               	.L110:
+ 1229               	.LSM181:
+ 1230 00a8 1123      		tst r17
+ 1231 00aa 01F0      		breq .L111
+ 1232               	.LSM182:
+ 1233 00ac 0E94 0000 		call jump_to_main_program
+ 1234               	.L111:
+ 1235               	.LSM183:
+ 1236 00b0 5F9B      		sbis 43-32,7
+ 1237 00b2 00C0      		rjmp .L121
+ 1238               	.L116:
+ 1239               	.LBB90:
+ 1240               	.LBB91:
+ 1241               	.LBB92:
+ 1242               	.LSM184:
+ 1243 00b4 5F9B      		sbis 43-32,7
+ 1244 00b6 00C0      		rjmp .L116
+ 1245               	.LSM185:
+ 1246 00b8 8CB1      		in r24,44-32
+ 1247               	.LVL69:
+ 1248               	.LBE92:
+ 1249               	.LBE91:
+ 1250               	.LSM186:
+ 1251 00ba 0E94 0000 		call handle_midi
+ 1252               	.LVL70:
+ 1253 00be 00C0      		rjmp .L121
+ 1254               	.LBE90:
+ 1255               	.LFE28:
+ 1257               	.global	jump_to_app
+ 1258               	.global	jump_to_app
+ 1259               		.section .bss
+ 1262               	jump_to_app:
+ 1263 0000 0000      		.skip 2,0
+ 1264               	.global	ack_msg
+ 1265               		.data
+ 1268               	ack_msg:
+ 1269 001c F0        		.byte	-16
+ 1270 001d 00        		.byte	0
+ 1271 001e 13        		.byte	19
+ 1272 001f 41        		.byte	65
+ 1273 0020 02        		.byte	2
+ 1274 0021 F7        		.byte	-9
+ 1275               	.global	nak_msg
+ 1278               	nak_msg:
+ 1279 0022 F0        		.byte	-16
+ 1280 0023 00        		.byte	0
+ 1281 0024 13        		.byte	19
+ 1282 0025 41        		.byte	65
+ 1283 0026 10        		.byte	16
+ 1284 0027 F7        		.byte	-9
+ 1285               	.global	block_cnt
+ 1286               	.global	block_cnt
+ 1287               		.section .bss
+ 1290               	block_cnt:
+ 1291 0002 0000      		.skip 2,0
+ 1292               	.global	in_sysex
+ 1293               	.global	in_sysex
+ 1296               	in_sysex:
+ 1297 0004 00        		.skip 1,0
+ 1298               		.lcomm recvd,2
+ 1299               		.lcomm sysex_address,2
+ 1300               		.comm sysex_data,256,1
+ 1301               		.comm data,100,1
+ 1302               		.comm sysex_cnt,1,1
+ 1455               	.Letext0:
+DEFINED SYMBOLS
+                            *ABS*:00000000 bootloader.c
+/var/folders/vf/vfXC2vJGFH4krx0h-0GlD++++TI/-Tmp-//ccyaiea1.s:2      *ABS*:0000003f __SREG__
+/var/folders/vf/vfXC2vJGFH4krx0h-0GlD++++TI/-Tmp-//ccyaiea1.s:3      *ABS*:0000003e __SP_H__
+/var/folders/vf/vfXC2vJGFH4krx0h-0GlD++++TI/-Tmp-//ccyaiea1.s:4      *ABS*:0000003d __SP_L__
+/var/folders/vf/vfXC2vJGFH4krx0h-0GlD++++TI/-Tmp-//ccyaiea1.s:5      *ABS*:00000034 __CCP__
+/var/folders/vf/vfXC2vJGFH4krx0h-0GlD++++TI/-Tmp-//ccyaiea1.s:6      *ABS*:00000000 __tmp_reg__
+/var/folders/vf/vfXC2vJGFH4krx0h-0GlD++++TI/-Tmp-//ccyaiea1.s:7      *ABS*:00000001 __zero_reg__
+/var/folders/vf/vfXC2vJGFH4krx0h-0GlD++++TI/-Tmp-//ccyaiea1.s:18     .text.eeprom_read_byte:00000000 eeprom_read_byte
+/var/folders/vf/vfXC2vJGFH4krx0h-0GlD++++TI/-Tmp-//ccyaiea1.s:52     .text.eeprom_write_byte:00000000 eeprom_write_byte
+/var/folders/vf/vfXC2vJGFH4krx0h-0GlD++++TI/-Tmp-//ccyaiea1.s:89     .text.bl_uart_getc:00000000 bl_uart_getc
+/var/folders/vf/vfXC2vJGFH4krx0h-0GlD++++TI/-Tmp-//ccyaiea1.s:108    .text.bl_uart_putc:00000000 bl_uart_putc
+/var/folders/vf/vfXC2vJGFH4krx0h-0GlD++++TI/-Tmp-//ccyaiea1.s:128    .text.midi_sysex_send_ack:00000000 midi_sysex_send_ack
+/var/folders/vf/vfXC2vJGFH4krx0h-0GlD++++TI/-Tmp-//ccyaiea1.s:1268   .data:0000001c ack_msg
+/var/folders/vf/vfXC2vJGFH4krx0h-0GlD++++TI/-Tmp-//ccyaiea1.s:163    .text.midi_sysex_send_nak:00000000 midi_sysex_send_nak
+/var/folders/vf/vfXC2vJGFH4krx0h-0GlD++++TI/-Tmp-//ccyaiea1.s:1278   .data:00000022 nak_msg
+/var/folders/vf/vfXC2vJGFH4krx0h-0GlD++++TI/-Tmp-//ccyaiea1.s:198    .text.make_word:00000000 make_word
+                            *COM*:00000064 data
+/var/folders/vf/vfXC2vJGFH4krx0h-0GlD++++TI/-Tmp-//ccyaiea1.s:261    .text.check_firmware_checksum:00000000 check_firmware_checksum
+/var/folders/vf/vfXC2vJGFH4krx0h-0GlD++++TI/-Tmp-//ccyaiea1.s:333    .text.is_button_pressed:00000000 is_button_pressed
+/var/folders/vf/vfXC2vJGFH4krx0h-0GlD++++TI/-Tmp-//ccyaiea1.s:355    .text.write_block_data:00000000 write_block_data
+/var/folders/vf/vfXC2vJGFH4krx0h-0GlD++++TI/-Tmp-//ccyaiea1.s:1298   .bss:00000007 sysex_address
+                            *COM*:00000100 sysex_data
+                             .bss:00000005 recvd
+/var/folders/vf/vfXC2vJGFH4krx0h-0GlD++++TI/-Tmp-//ccyaiea1.s:476    .text.write_block:00000000 write_block
+                            *COM*:00000001 sysex_cnt
+/var/folders/vf/vfXC2vJGFH4krx0h-0GlD++++TI/-Tmp-//ccyaiea1.s:671    .text.jump_to_main_program:00000000 jump_to_main_program
+/var/folders/vf/vfXC2vJGFH4krx0h-0GlD++++TI/-Tmp-//ccyaiea1.s:1262   .bss:00000000 jump_to_app
+/var/folders/vf/vfXC2vJGFH4krx0h-0GlD++++TI/-Tmp-//ccyaiea1.s:773    .text.write_firmware_checksum:00000000 write_firmware_checksum
+/var/folders/vf/vfXC2vJGFH4krx0h-0GlD++++TI/-Tmp-//ccyaiea1.s:832    .text.write_checksum:00000000 write_checksum
+/var/folders/vf/vfXC2vJGFH4krx0h-0GlD++++TI/-Tmp-//ccyaiea1.s:900    .text.handle_sysex:00000000 handle_sysex
+/var/folders/vf/vfXC2vJGFH4krx0h-0GlD++++TI/-Tmp-//ccyaiea1.s:1003   .text.handle_midi:00000000 handle_midi
+/var/folders/vf/vfXC2vJGFH4krx0h-0GlD++++TI/-Tmp-//ccyaiea1.s:1296   .bss:00000004 in_sysex
+/var/folders/vf/vfXC2vJGFH4krx0h-0GlD++++TI/-Tmp-//ccyaiea1.s:1103   .text.main:00000000 main
+/var/folders/vf/vfXC2vJGFH4krx0h-0GlD++++TI/-Tmp-//ccyaiea1.s:1290   .bss:00000002 block_cnt
+
+UNDEFINED SYMBOLS
+__eerd_word
+sr165_read
+lcd_line2
+lcd_put
+lcd_putnumberx
+__epilogue_restores__
+lcd_line1
+lcd_clear_line
+__eewr_word
+sr165_init
+lcd_init
+__do_copy_data
+__do_clear_bss
