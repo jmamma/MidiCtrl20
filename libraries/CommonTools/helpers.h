@@ -20,6 +20,7 @@
 
 extern "C" {
 #endif
+#define IN_IRQ()  !IS_BIT_SET(SREG, SREG_I)
 
 
 /**
