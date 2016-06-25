@@ -306,7 +306,7 @@ void MDClass::muteTrack(uint8_t track, bool mute) {
 	
 	uint8_t channel = track >> 2;
 	uint8_t b = track & 3;
-	uint8_t cc = 16 + b;
+    uint8_t cc = 12 + b;
 	MidiUart.sendCC(channel + global.baseChannel, cc, mute ? 1 : 0);
 }
 
@@ -390,10 +390,10 @@ bool MDClass::waitBlocking(MDBlockCurrentStatusCallback *cb, uint16_t timeout) {
        
        //MCL Code, trying to replicate main loop
        
-       // if ((MidiClock.mode == MidiClock.EXTERNAL ||
-       //                          MidiClock.mode == MidiClock.EXTERNAL_UART2)) {
-       //       MidiClock.updateClockInterval();
-      //   }
+        if ((MidiClock.mode == MidiClock.EXTERNAL ||
+                                 MidiClock.mode == MidiClock.EXTERNAL_UART2)) {
+              MidiClock.updateClockInterval();
+         }
         handleIncomingMidi();
 		GUI.display();
 	} while ((clock_diff(start_clock, current_clock) < timeout) && !cb->received);
