@@ -366,14 +366,14 @@ void SDCardFile::close() {
   }
 }
 
-intptr_t SDCardFile::read(uint8_t *buf, uint8_t len) {
+intptr_t SDCardFile::read(uint8_t *buf, uint32_t len) {
   if (fd == NULL)
     return -1;
 
   return fat_read_file(fd, buf, len);
 }
 
-intptr_t SDCardFile::write(const uint8_t *buf, uint8_t len) {
+intptr_t SDCardFile::write(const uint8_t *buf, uint32_t len) {
   if (fd == NULL)
     return -1;
 

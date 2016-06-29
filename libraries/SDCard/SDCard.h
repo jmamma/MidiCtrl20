@@ -83,8 +83,8 @@ class SDCardFile : public SDCardEntry {
   bool open(bool create = false);
   void close();
   
-  intptr_t read(uint8_t *buf, uint8_t len);
-  intptr_t write(const uint8_t *buf, uint8_t len);
+  intptr_t read(uint8_t *buf, uint32_t len);
+  intptr_t write(const uint8_t *buf, uint32_t len);
   bool seek(int32_t *offset, uint8_t whence);
   
   /* file functions to slurp and write full file */
