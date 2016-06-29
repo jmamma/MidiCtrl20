@@ -84,13 +84,21 @@ uint16_t MDGlobal::toSysex(ElektronDataToSysexEncoder &encoder) {
 	encoder.packb(extendedMode);
 	
 	uint8_t byte = 0;
-	if (clockIn)
-		SET_BIT(byte, 0);
-	if (transportIn)
-		SET_BIT(byte, 4);
-	if (clockOut)
+//  clockIn = false;
+//  transportIn = true;
+//  clockOut = true;
+//  transportOut = true;
+    if (clockIn)
+//        byte = byte + 1;
+        SET_BIT(byte, 0);
+	if (!transportIn)
+ //       byte = byte + 8;
+	SET_BIT(byte, 4);
+    if (clockOut)
+ //      byte = byte + 16;
 		SET_BIT(byte, 5);
 	if (transportOut)
+//        byte = byte + 32;
 		SET_BIT(byte, 6);
 	encoder.pack8(byte);
 	encoder.packb(localOn);
