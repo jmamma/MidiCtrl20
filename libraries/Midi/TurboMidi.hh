@@ -88,9 +88,9 @@ public:
 		| _BV(TURBOMIDI_SPEED_2x)
 		| _BV(TURBOMIDI_SPEED_3_33x)
 		| _BV(TURBOMIDI_SPEED_4x)
-		//| _BV(TURBOMIDI_SPEED_5x)
-		//		| _BV(TURBOMIDI_SPEED_6_66x)
-		//		| _BV(TURBOMIDI_SPEED_8x)
+	//	| _BV(TURBOMIDI_SPEED_5x)
+	//	| _BV(TURBOMIDI_SPEED_6_66x)
+//		| _BV(TURBOMIDI_SPEED_8x)
 		;
 
 	static const uint16_t certifiedSpeeds =
@@ -98,9 +98,9 @@ public:
 		| _BV(TURBOMIDI_SPEED_2x)
 		| _BV(TURBOMIDI_SPEED_3_33x)
 		| _BV(TURBOMIDI_SPEED_4x) 
-		//| _BV(TURBOMIDI_SPEED_5x)
-		//		| _BV(TURBOMIDI_SPEED_6_66x)
-		//		| _BV(TURBOMIDI_SPEED_8x)
+	  //  | _BV(TURBOMIDI_SPEED_5x)
+//		| _BV(TURBOMIDI_SPEED_6_66x)
+//		| _BV(TURBOMIDI_SPEED_8x)
 		;
 		
 

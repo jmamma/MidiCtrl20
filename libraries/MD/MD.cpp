@@ -452,7 +452,7 @@ uint8_t MDClass::getCurrentTrack(uint16_t timeout) {
 	if (value == 255) {
 		return 255;
 	} else {
-		MD.currentKit = value;
+		MD.currentTrack = value;
 		return value;
 	}
 }
