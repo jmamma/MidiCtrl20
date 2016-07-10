@@ -96,7 +96,7 @@ public:
 	static const uint16_t certifiedSpeeds =
 		_BV(TURBOMIDI_SPEED_1x)
 		| _BV(TURBOMIDI_SPEED_2x)
-		| _BV(TURBOMIDI_SPEED_3_33x)
+    	| _BV(TURBOMIDI_SPEED_3_33x)
 		| _BV(TURBOMIDI_SPEED_4x) 
 	  //  | _BV(TURBOMIDI_SPEED_5x)
 //		| _BV(TURBOMIDI_SPEED_6_66x)

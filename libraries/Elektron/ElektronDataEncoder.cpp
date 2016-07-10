@@ -16,7 +16,7 @@
 #include "Elektron.hh"
 #include "ElektronDataEncoder.hh"
 
-#define SEND_DELAY_US 15
+#define SEND_DELAY_US 1
 
 void ElektronDataToSysexEncoder::init(DATA_ENCODER_INIT(uint8_t *_sysex, uint16_t _sysexLen),
 																MidiUartParent *_uart) {
