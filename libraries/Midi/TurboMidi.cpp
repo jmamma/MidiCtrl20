@@ -6,6 +6,10 @@
 
 #ifndef HOST_MIDIDUINO
 
+static uint8_t turbomidi_sysex_header_hack[] = {
+0xF0, 0x00, 0x20, 0x3c, 0x04, 0x00
+};
+
 static uint8_t turbomidi_sysex_header[] = {
 	0xF0, 0x00, 0x20, 0x3c, 0x00, 0x00
 };
@@ -28,53 +32,103 @@ void TurboMidiSysexListenerClass::handleByte(uint8_t byte) {
 		}
 	}
 }
+static void sendTurbomidiHeaderHack(uint8_t cmd) {
+    MidiUart.puts(turbomidi_sysex_header_hack, sizeof(turbomidi_sysex_header_hack));
+    MidiUart.putc(cmd);
+}
+
+static void sendTurbomidiHeader(uint8_t cmd) {
+    MidiUart.puts(turbomidi_sysex_header, sizeof(turbomidi_sysex_header));
+    MidiUart.putc(cmd);
+}
+
+static void sendSpeedPattern() {
+    for (uint8_t i = 0; i < 4; i++) {
+        MidiUart.putc(0x55);
+    }
+    for (uint8_t i = 0; i < 4; i++) {
+        MidiUart.putc(0x00);
+    }
+}
+
+
 
 void TurboMidiSysexListenerClass::end() {
-	if (!isGenericMessage)
-		return;
+
+        //	if (!isGenericMessage)
+//		return;
 
 	switch (MidiSysex.data[5]) {
 		/* master requests (when we are slave) */
 	case TURBOMIDI_SPEED_REQUEST:
-		break;
+        //sendTurbomidiHeader(TURBOMIDI_SPEED_ANSWER);
+        //MidiUart.putc(speeds);
+        //MidiUart.putc(0x00);
+        //MidiUart.putc(certifiedSpeeds);
+        //MidiUart.putc(0x00);
+        //MidiUart.putc(0xF7);        
+
+            sendSpeedAnswer();
+        break;
 
 	case TURBOMIDI_SPEED_NEGOTIATION_MASTER:
-		break;
+        slave_speed1 = MidiSysex.data[6];
+        slave_speed2 = MidiSysex.data[7];
+        
+        sendTurbomidiHeader(0x13);
+        MidiUart.putc(0xF7);
+        GUI.flash_printf("ACK %b %b", slave_speed1, slave_speed2);
+//        setSpeed(slave_speed1); 
+        setSpeed(slave_speed1); 
+        
+        break;
 
 	case TURBOMIDI_SPEED_TEST_MASTER:
-		break;
+setLed();
+
+        sendTurbomidiHeader(TURBOMIDI_SPEED_RESULT_SLAVE);
+        
+        sendSpeedPattern();
+        MidiUart.putc(0xF7);
+		
+        break;
 
 	case TURBOMIDI_SPEED_TEST_MASTER_2:
-		break;
+   setLed2();
+   
+        sendTurbomidiHeader(TURBOMIDI_SPEED_RESULT_SLAVE_2);
+        MidiUart.putc(0xF7);
+		setSpeed(slave_speed2);
+        break;
 
 
 		/* slave answers (when we are master) */
 	case TURBOMIDI_SPEED_ANSWER:
 		{
-			if (state == tm_master_wait_req_answer) {
-				slaveSpeeds = MidiSysex.data[6] | (MidiSysex.data[7] << 7);
+	//		if (state == tm_master_wait_req_answer) {
+    GUI.flash_printf("SPEEDANS %b %b",  MidiSysex.data[6] ,  MidiSysex.data[7] );
+                slaveSpeeds = MidiSysex.data[6] | (MidiSysex.data[7] << 7);
 				certifiedSlaveSpeeds = MidiSysex.data[8] | (MidiSysex.data[9] << 7);
 				state = tm_master_req_answer_recvd;
-			}
+	//		}
 		}
 		break;
 
 	case TURBOMIDI_SPEED_ACK_SLAVE:
-		if (state == tm_master_wait_speed_ack) {
+//		if (state == tm_master_wait_speed_ack) {
 			state = tm_master_speed_ack_recvd;
-		}
+//		}
 		break;
 
 	case TURBOMIDI_SPEED_RESULT_SLAVE:
-		if (state == tm_master_wait_test_1) {
+	//	if (state == tm_master_wait_test_1) {
 			state = tm_master_test_1_recvd;
-		}
+	//	}
 		break;
-
 	case TURBOMIDI_SPEED_RESULT_SLAVE_2:
-		if (state == tm_master_wait_test_2) {
+	//	if (state == tm_master_wait_test_2) {
 			state = tm_master_test_2_recvd;
-		}
+	//	}
 		break;
 
 	default:
@@ -98,57 +152,114 @@ void TurboMidiSysexListenerClass::stopTurboMidi() {
 
 
 bool TurboMidiSysexListenerClass::startTurboMidi() {
-	slaveSpeeds = 0;
+	
+//sendTurbomidiHeaderHack(0x03);
+//MidiUart.putc(0x07);
+//MidiUart.putc(0xF7);
+//setSpeed(7);
+sendTurbomidiHeader(0x20);
+    MidiUart.putc(7 );
+            MidiUart.putc(0xF7);
+                    delay(10);
+// setSpeed(tmSpeeds[7 ]);
+
+                    MidiUart.setSpeed(tmSpeeds[7 ]);
+                             MidiUart.setActiveSenseTimer(290);
+
+   return true;
+  //  return true;    
+    slaveSpeeds = 0;
 	certifiedSlaveSpeeds = 0;
 
 	MidiUart.setSpeed(31250);
 
 	uint8_t speed1;
 	uint8_t speed2;
-	
-	sendSpeedRequest();
+    sendTurbomidiHeaderHack(07);
+    sendSpeedRequest();
 	bool ret = blockForState(tm_master_req_answer_recvd);
 	GUI.setLine(GUI.LINE2);
-	if (ret) {
-		GUI.flash_printf("s %X c %X", slaveSpeeds, certifiedSlaveSpeeds);
-	} else {
+
+//	return true;
+            if (ret) {
+//		GUI.flash_printf("s %X c %X", slaveSpeeds, certifiedSlaveSpeeds);
+	
+    } else {
 		GUI.flash_printf("REQ TIMEOUT");
 		goto fail;
 	}
 
 	speed1 = getHighestBit(speeds & slaveSpeeds) + 1;
 	speed2 = getHighestBit(certifiedSpeeds & certifiedSlaveSpeeds) + 1;
+    speed1 = 7;
+    speed2 = 7;
+
     sendSpeedNegotiationRequest(speed1, speed2);
-	ret = blockForState(tm_master_speed_ack_recvd);
+	
+    ret = blockForState(tm_master_speed_ack_recvd);
 	GUI.setLine(GUI.LINE2);
 	if (ret) {
 		GUI.flash_printf("ACK %b %b", speed1, speed2);
 	} else {
 		GUI.flash_printf("ACK TIMEOUT");
-		goto fail;
+	    return true;
 	}
+//    uint32_t acpu = 4;
+   // UCSR0A = 1;
+     // (mcpu & 0xFF);
+setSpeed(speed1);
+state = tm_master_wait_test_1;
 
- 	sendSpeedTest1(speed1);
-	ret = blockForState(tm_master_test_1_recvd);
+sendSpeedTest1(speed1);
+//sendSpeedTest1(speed1);
+
+      //  while (tm_master_test_1_recvd != state) {
+//delay(5);
+  //  handleIncomingMidi();
+
+    //   }
+    
+    ret = blockForState(tm_master_test_1_recvd);
 	GUI.setLine(GUI.LINE2);
-	if (ret) {
+    if (ret) {
 		GUI.flash_printf("TEST1 ACK");
 	} else {
 		GUI.flash_printf("TEST1 TIMEOUT");
-		goto fail;
+	//	goto fail;
 	}
+//    for (uint8_t loop = 0; loop < 100; loop++) {
+  //  midiSpeedPush(7);
+   // }
+   // speed1 = 7;
+   // speed2 = 7;
 
+  //  sendSpeedNegotiationRequest(speed1, speed2);
+  //  MidiUart.setSpeed(31250);
+
+    // ret = blockForState(tm_master_speed_ack_recvd);
+   // GUI.setLine(GUI.LINE2);
+   // if (ret) {
+   //  GUI.flash_printf("ACK2 %b %b", speed1, speed2);
+//} else {
+  //      GUI.flash_printf("ACK2 TIMEOUT");
+    //    goto fail;
+    //}
+
+    //return true;
 	sendSpeedTest2(speed2);
 	ret = blockForState(tm_master_test_2_recvd);
 	GUI.setLine(GUI.LINE2);
-	if (ret) {
-		GUI.flash_printf("TEST2 ACK");
-	} else {
+    	if (ret) {
+	GUI.flash_printf("TEST2 ACK");
+    
+
+    } else {
 		GUI.flash_printf("TEST2 TIMEOUT");
 		goto fail;
 }
+setSpeed(speed2);
 
-	MidiUart.setActiveSenseTimer(130);
+//	MidiUart.setActiveSenseTimer(130);
 
 
 	state = tm_master_ok;
@@ -158,11 +269,6 @@ bool TurboMidiSysexListenerClass::startTurboMidi() {
  fail:
 	stopTurboMidi();
 	return false;
-}
-
-static void sendTurbomidiHeader(uint8_t cmd) {
-	MidiUart.puts(turbomidi_sysex_header, sizeof(turbomidi_sysex_header));
-	MidiUart.putc(cmd);
 }
 
 bool TurboMidiSysexListenerClass::sendSpeedRequest() {
@@ -177,17 +283,8 @@ void TurboMidiSysexListenerClass::sendSpeedNegotiationRequest(uint8_t speed1, ui
 
 	sendTurbomidiHeader(TURBOMIDI_SPEED_NEGOTIATION_MASTER);
 	MidiUart.putc(speed1);
-	MidiUart.putc(speed2);
+//	MidiUart.putc(speed2);
 	MidiUart.putc(0xF7);
-}
-
-static void sendSpeedPattern() {
-	for (uint8_t i = 0; i < 4; i++) {
-		MidiUart.putc(0x55);
-	}
-	for (uint8_t i = 0; i < 4; i++) {
-		MidiUart.putc(0x00);
-	}
 }
 
 uint32_t TurboMidiSysexListenerClass::tmSpeeds[12] = {
@@ -208,13 +305,31 @@ uint32_t TurboMidiSysexListenerClass::tmSpeeds[12] = {
 	
 void TurboMidiSysexListenerClass::setSpeed(uint8_t speed) {
 	currentSpeed = speed;
-	MidiUart.setSpeed(tmSpeeds[speed]);
+    uint32_t cpu;
+if (speed > 1) {
+    UCSR0A |= _BV(U2X0);
+cpu = (F_CPU / 8);
+
+}
+else {
+cpu = (F_CPU / 16);
+UCSR0A |= ~(_BV(U2X0));;
+
+}
+
+        cpu /= tmSpeeds[speed];
+          cpu--;
+
+            //uint32_t cpu = (F_CPU / 16);
+            //cpu /= speed;
+            //cpu--;
+          //UBRR0H = ((cpu >> 8));
+            
+            UBRR0H = ((cpu >> 8) & 0xFF);
+              UBRR0L = (cpu & 0xFF);
 }
 
 void TurboMidiSysexListenerClass::sendSpeedTest1(uint8_t speed1) {
-	state = tm_master_wait_test_1;
-
-	setSpeed(speed1);
 
 	for (uint8_t i = 0; i < 16; i++) {
 		MidiUart.putc(0x0C);
@@ -230,19 +345,30 @@ void TurboMidiSysexListenerClass::sendSpeedTest1(uint8_t speed1) {
 void TurboMidiSysexListenerClass::sendSpeedTest2(uint8_t speed2) {
 	state = tm_master_wait_test_2;
 
-	setSpeed(speed2);
 	
 	sendTurbomidiHeader(TURBOMIDI_SPEED_TEST_MASTER_2);	
 	MidiUart.putc(0xF7);
+
 }
 	
 void TurboMidiSysexListenerClass::sendSpeedAnswer() {
 	sendTurbomidiHeader(TURBOMIDI_SPEED_ANSWER);	
-	MidiUart.putc(speeds & 0x7F);
-	MidiUart.putc((speeds >> 7) & 0x7F);
-	MidiUart.putc(certifiedSpeeds & 0x7F);
-	MidiUart.putc((certifiedSpeeds >> 7) & 0x7F);
+//	MidiUart.putc(speeds & 0x7F);
+	MidiUart.putc(32);
+    MidiUart.putc(0);
+    //MidiUart.putc((speeds >> 7) & 0x7F);
+	MidiUart.putc(32);
+    MidiUart.putc(0);
+
+    //MidiUart.putc((certifiedSpeeds >> 7) & 0x7F);
 	MidiUart.putc(0xF7);
+}
+
+void TurboMidiSysexListenerClass::midiSpeedPush(uint8_t push_speed) {
+    sendTurbomidiHeader(0x20);	
+    MidiUart.putc(push_speed);
+
+    MidiUart.putc(0xF7);
 }
 
 void TurboMidiSysexListenerClass::sendSpeedNegotiationAck() {

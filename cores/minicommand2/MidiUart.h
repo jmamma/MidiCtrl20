@@ -8,7 +8,7 @@ class MidiUartClass;
 #include "RingBuffer.h"
 
 #define TX_IRQ 1
-#define RX_BUF_SIZE 6000
+#define RX_BUF_SIZE 8000
 
 //#define RX_BUF_SIZE 2048
 #if (RX_BUF_SIZE >= 256)

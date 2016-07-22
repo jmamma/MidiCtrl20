@@ -6,7 +6,7 @@
 #include <inttypes.h>
 
 #ifndef SYSEX_BUF_SIZE
-#define SYSEX_BUF_SIZE 128
+#define SYSEX_BUF_SIZE 1024
 #endif
 
 class MidiSysexClass;

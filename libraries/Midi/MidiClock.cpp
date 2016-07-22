@@ -247,9 +247,11 @@ void MidiClockClass::callCallbacks() {
 void MidiClockClass::handleImmediateClock() {
 	uint8_t _mod6_counter = mod6_counter;
 	
-	if (transmit)
+	if ((transmit) ) {
+//       MidiUart.putc(0xF8);
+
 		MidiUart.putc_immediate(0xF8);
-	
+    }
 	incrementCounters();
 	callCallbacks();
 }

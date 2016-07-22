@@ -70,13 +70,15 @@ public:
 	void    sendSpeedNegotiationAck();
 	void    sendSpeedTest1Result();
 	void    sendSpeedTest2Result();
-
+    void    midiSpeedPush(uint8_t push_speed);
 	bool    startTurboMidi();
 	void    stopTurboMidi();
 
 	static uint32_t tmSpeeds[12];
 	
 	uint8_t currentSpeed;
+    uint8_t slave_speed1;
+    uint8_t slave_speed2;
 
 	void setSpeed(uint8_t speed);
 	
@@ -84,23 +86,25 @@ public:
 	uint16_t certifiedSlaveSpeeds;
 
 	static const uint16_t speeds =
-		_BV(TURBOMIDI_SPEED_1x)
-		| _BV(TURBOMIDI_SPEED_2x)
-		| _BV(TURBOMIDI_SPEED_3_33x)
+        _BV(TURBOMIDI_SPEED_2x)
 		| _BV(TURBOMIDI_SPEED_4x)
+		| _BV(TURBOMIDI_SPEED_8x)
+//		| _BV(TURBOMIDI_SPEED_3_33x)
+//		| _BV(TURBOMIDI_SPEED_4x)
 	//	| _BV(TURBOMIDI_SPEED_5x)
-	//	| _BV(TURBOMIDI_SPEED_6_66x)
-//		| _BV(TURBOMIDI_SPEED_8x)
+//		| _BV(TURBOMIDI_SPEED_6_66x)
+//		| _BV(TURBOMIDI_SPEED_10x)
 		;
 
 	static const uint16_t certifiedSpeeds =
-		_BV(TURBOMIDI_SPEED_1x)
-		| _BV(TURBOMIDI_SPEED_2x)
-    	| _BV(TURBOMIDI_SPEED_3_33x)
-		| _BV(TURBOMIDI_SPEED_4x) 
+        _BV(TURBOMIDI_SPEED_2x)
+		| _BV(TURBOMIDI_SPEED_4x)
+		| _BV(TURBOMIDI_SPEED_8x)
+//    	| _BV(TURBOMIDI_SPEED_3_33x)
+//		| _BV(TURBOMIDI_SPEED_4x) 
 	  //  | _BV(TURBOMIDI_SPEED_5x)
 //		| _BV(TURBOMIDI_SPEED_6_66x)
-//		| _BV(TURBOMIDI_SPEED_8x)
+//		| _BV(TURBOMIDI_SPEED_10x)
 		;
 		
 

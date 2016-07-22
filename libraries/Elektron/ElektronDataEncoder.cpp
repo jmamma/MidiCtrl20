@@ -74,7 +74,6 @@ uint16_t ElektronDataToSysexEncoder::finish() {
 	}
 	if (uart != NULL) {
 		for (uint8_t i = 0; i < inc; i++) {
-            delayMicroseconds(SEND_DELAY_US);
             uart->putc(ptr[i]);
 		}
 		ptr = data;
@@ -108,7 +107,6 @@ DATA_ENCODER_RETURN_TYPE ElektronDataToSysexEncoder::encode7Bit(uint8_t inb) {
 		}
 		if (uart != NULL) {
 			for (uint8_t i = 0; i < 8; i++) {
-                delayMicroseconds(SEND_DELAY_US);
                 uart->putc(data[i]);
 			}
 			ptr = data;
@@ -132,7 +130,6 @@ DATA_ENCODER_RETURN_TYPE ElektronDataToSysexEncoder::pack8(uint8_t inb) {
 			checksum += inb;
 		}
 		if (uart != NULL) {
-			delayMicroseconds(SEND_DELAY_US);
             uart->putc(inb);
 		} else {
 			*(ptr++) = inb;

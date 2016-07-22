@@ -53,6 +53,12 @@ void MidiUartClass::setSpeed(uint32_t speed) {
   uint32_t cpu = (F_CPU / 16);
   cpu /= speed;
   cpu--;
+
+  //uint32_t cpu = (F_CPU / 16);
+  //cpu /= speed;
+  //cpu--;
+//UBRR0H = ((cpu >> 8));
+  
   UBRR0H = ((cpu >> 8) & 0xFF);
   UBRR0L = (cpu & 0xFF);
 }
@@ -62,8 +68,13 @@ void MidiUartClass::putc_immediate(uint8_t c) {
   SET_LOCK();
   // block interrupts
   while (!UART_CHECK_EMPTY_BUFFER())
-    ;
-  UART_WRITE_CHAR(c);
+          ;
+ //Microseconds(20);
+// MidiUart.sendActiveSenseTimer = 300;
+ 
+          UART_WRITE_CHAR(c);
+
+
   CLEAR_LOCK();
 }
 
@@ -80,7 +91,11 @@ void MidiUartClass::putc(uint8_t c) {
         while (!UART_CHECK_EMPTY_BUFFER())
           ;
         if (!MidiUart.txRb.isEmpty()) {
+//Microseconds(20);
+        //MidiUart.sendActiveSenseTimer = 300;
+
           UART_WRITE_CHAR(MidiUart.txRb.get());
+
         }
       } else {
         SET_BIT(UCSR0B, UDRIE);
@@ -94,9 +109,12 @@ void MidiUartClass::putc(uint8_t c) {
     SET_BIT(UCSR0B, UDRIE);
   }
 #else
-  while (!UART_CHECK_EMPTY_BUFFER())
-    ;
-  UART_WRITE_CHAR(c);
+  while (!UART_CHECK_EMPTY_BUFFER()) {
+//Microseconds(20);
+//MidiUart.sendActiveSenseTimer = 300; 
+
+          UART_WRITE_CHAR(c);
+  }
 #endif
 }
 
@@ -131,7 +149,7 @@ SIGNAL(USART0_RX_vect) {
       MidiClock.handleMidiContinue();
       midi_start();
       break;
-
+    
     default:
       MidiUart.rxRb.put(c);
       break;
@@ -142,7 +160,7 @@ SIGNAL(USART0_RX_vect) {
 #if 1
     // show overflow debug
     if (MidiUart.rxRb.overflow) {
-//      setLed2();
+      setLed2();
     }
 #endif
 
@@ -153,7 +171,11 @@ SIGNAL(USART0_RX_vect) {
 #ifdef TX_IRQ
 SIGNAL(USART0_UDRE_vect) {
   if (!MidiUart.txRb.isEmpty()) {
+//Microseconds(20);
+    //MidiUart.sendActiveSenseTimer = 300;
+
     UART_WRITE_CHAR(MidiUart.txRb.get());
+
   }
 
   if (MidiUart.txRb.isEmpty()) {

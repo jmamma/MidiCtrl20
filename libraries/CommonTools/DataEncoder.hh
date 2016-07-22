@@ -45,7 +45,8 @@ public:
 	}
 
 	DATA_ENCODER_RETURN_TYPE pack8(uint8_t inb) {
-		uart->putc(inb);
+//        delayMicroseconds(50);
+        uart->putc(inb);
 		DATA_ENCODER_TRUE();
 	}
 
