@@ -24,7 +24,9 @@ class MidiUartClass;
 #else
 #define TX_BUF_TYPE uint8_t
 #endif
-
+void isr_usart0();
+void isr_usart1();
+        
 class MidiUartClass : public MidiUartParent {
   virtual void initSerial();
   
