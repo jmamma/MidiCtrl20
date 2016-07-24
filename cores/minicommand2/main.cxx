@@ -120,7 +120,7 @@ ISR(TIMER2_OVF_vect) {
   }
 
 	MidiUart.tickActiveSense();
-	MidiUart2.tickActiveSense();
+	//MidiUart2.tickActiveSense();
   
   //  SET_BIT(OUTPUTPORT, OUTPUTPIN);
 
@@ -139,7 +139,7 @@ void handleIncomingMidi() {
   while (MidiUart.avail()) {
     Midi.handleByte(MidiUart.getc());
   }
-  
+ //Disable non realtime midi 
   while (MidiUart2.avail()) {
     Midi2.handleByte(MidiUart2.getc());
   }

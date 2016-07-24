@@ -134,10 +134,10 @@ template <class C, int N, class T>
 
 template <class C, int N, class T>
   bool CRingBuffer<C, N, T>::isEmpty() volatile {
-  USE_LOCK();
-  SET_LOCK();
+//  USE_LOCK();
+//  SET_LOCK();
   bool ret = (rd == wr);
-  CLEAR_LOCK();
+//  CLEAR_LOCK();
   return ret;
 }
 

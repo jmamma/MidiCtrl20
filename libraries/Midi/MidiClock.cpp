@@ -218,7 +218,10 @@ void MidiClockClass::callCallbacks() {
 	} else {
 		clearLed();
 	}
-	
+
+//Disabled callbacks as they should not be handled during interrupt
+//Also breaks 8x turbo
+    /*	
 	static bool inCallback = false;
 	if (inCallback) {
 		return;
@@ -228,7 +231,8 @@ void MidiClockClass::callCallbacks() {
 	
 #ifndef HOST_MIDIDUINO
 	sei();
-#endif /* HOST_MIDIDUINO */
+#endif 
+    // HOST_MIDIDUINO/
 	
 	//    on96Callbacks.call();
 	
@@ -242,6 +246,7 @@ void MidiClockClass::callCallbacks() {
 	}
 	
 	inCallback = false;
+*/
 }
 
 void MidiClockClass::handleImmediateClock() {
